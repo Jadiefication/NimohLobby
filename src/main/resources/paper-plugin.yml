@@ -1,0 +1,6 @@
+name: Lobby
+version: '1.0-SNAPSHOT'
+main: src.net.jadiefication.lobby.Lobby
+api-version: '1.21'
+
+commands:
