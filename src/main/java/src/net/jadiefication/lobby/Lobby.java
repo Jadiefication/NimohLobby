@@ -57,7 +57,7 @@ public final class Lobby extends JavaPlugin implements Listener {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("survival", new SurvivalCommand(this));
+            commands.register("survivals", new SurvivalCommand(this));
         });
     }
 
@@ -86,6 +86,9 @@ public final class Lobby extends JavaPlugin implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (event.getInventory().equals(navigationGUI.getInventory())) {
             event.setCancelled(true);
+            if (event.getSlot() == 22) {
+                player.performCommand("server survival");
+            }
         }
     }
 
