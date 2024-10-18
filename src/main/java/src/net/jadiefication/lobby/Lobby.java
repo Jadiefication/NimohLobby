@@ -1,5 +1,7 @@
 package src.net.jadiefication.lobby;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -34,6 +36,7 @@ public final class Lobby extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "velocity:main");
         Bukkit.getPluginManager().registerEvents(this, this);
         getDataFolder().mkdirs(); // This will create the directory if it doesn't exist
         Path ignorePath = Path.of(getDataFolder().getPath(), "ignore.db");
@@ -51,6 +54,7 @@ public final class Lobby extends JavaPlugin implements Listener {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        registerCommand();
     }
 
     private void registerCommand() {
@@ -87,7 +91,7 @@ public final class Lobby extends JavaPlugin implements Listener {
         if (event.getInventory().equals(navigationGUI.getInventory())) {
             event.setCancelled(true);
             if (event.getSlot() == 22) {
-                player.performCommand("server survival");
+                player.performCommand("survivals");
             }
         }
     }
@@ -111,6 +115,7 @@ public final class Lobby extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         Database.closeDatabase();
+        this.getServer().getMessenger().unregisterOutgoingPluginChannel(this, "velocity:main");
         Bukkit.getPluginManager().disablePlugin(this);
     }
 }

@@ -1,19 +1,19 @@
 package src.net.jadiefication.Commands;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import jdk.jfr.Experimental;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import src.net.jadiefication.lobby.Lobby;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
 public class SurvivalCommand extends BasicCommands{
 
     public SurvivalCommand(Lobby plugin) {
         super(plugin);
-        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "bungeecord:main");
+        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "velocity:main");
     }
 
     @Override
@@ -21,17 +21,12 @@ public class SurvivalCommand extends BasicCommands{
 
         Player player = (Player) commandSourceStack.getSender();
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(outputStream);
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
-        try {
-            out.writeUTF("Connect");
-            out.writeUTF("survival");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        out.writeUTF("Connect");
+        out.writeUTF("survival");
 
-        player.sendPluginMessage(plugin, "bungeecord:main", outputStream.toByteArray());
+        player.sendPluginMessage(plugin, "velocity:main", out.toByteArray());
     }
 
     @Override
